@@ -100,4 +100,3 @@ class RoadsApi:
             # Carrega e descompacta arquivo comprimido
             formato_arquivo = dataset.headers['Content-Type'].split('/')[-1]
             extrair_arquivos(formato_arquivo, diretorio, dataset.content)
-            return

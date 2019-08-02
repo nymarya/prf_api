@@ -16,7 +16,7 @@ def extrair_arquivos(tipo: str, caminho, conteudo):
                 # Filtra arquivos csvs comprimidos
                 if f.filename.endswith('csv'):
                     filename = f.filename.split('/')[-1]
-                    print(filename)
+                    print("\033[91m>> Baixando {}\033[0m".format(f.filename))
                     with open(caminho + '/' + filename, "wb") as of:
                         of.write(rf.read(f.filename))
 
@@ -24,11 +24,10 @@ def extrair_arquivos(tipo: str, caminho, conteudo):
         os.remove('file.rar')
     else:
         zipfile = ZipFile(BytesIO(conteudo))
-        print(zipfile.namelist())
         with zipfile as zp:
             for f in zp.namelist():
                 if f.endswith('csv'):
                     filename = f.split('/')[-1]
-                    print(filename)
+                    print("\033[91m>> Baixando {}\033[0m".format(f))
                     with open(caminho + '/' + filename, "wb") as of:
-                        of.write(rf.read(f))
+                        of.write(zp.read(f))
