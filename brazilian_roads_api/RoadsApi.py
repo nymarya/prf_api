@@ -73,6 +73,10 @@ class RoadsApi:
         anos: list
             lista de anos dos dados
         """
+        if tipo not in ['infracoes', 'acidentes']:
+            self._exibir_erro("Tipo '{}' é inválido. ".format(tipo))
+            return
+
         dados = self.infracoes if tipo == 'infracoes' else ''
 
         # Checa se os anos são válidos
