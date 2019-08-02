@@ -14,7 +14,15 @@ class RoadsApi:
         self._carregar_links_infracoes()
 
     def _exibir_erro(self, ex: Exception, msg: str):
-        """Exibir mensagem personalizada para erro"""
+        """Exibir mensagem personalizada para erro
+
+        Parâmetros
+        ----------
+        ex: Exception
+            exceção que foi detectada
+        msg: str
+            mensagem personalizada para erro
+        """
         print('\033[91m{}\033[0m'.format(msg))
         print(ex)
 
