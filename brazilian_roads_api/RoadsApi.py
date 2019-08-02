@@ -86,9 +86,8 @@ class RoadsApi:
         for ano in anos:
             try:
                 link = self.download_url.format(dados.links[ano])
-                
+                print("Buscando datasets de {} para o ano {}...".format(tipo, ano))
                 dataset = requests.get(link)
-                print(dataset.headers['Content-Type'])
             except requests.exceptions.ConnectionError as ex:
                 self._exibir_erro("Falha de conexão. "
                                   "Verifique sua conexão e tente novamente.", ex)
