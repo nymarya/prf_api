@@ -26,6 +26,6 @@ from brazilian_roads_api import RoadsApi
 
 data = RoadsApi()
 
-data.baixar('infraces', anos=list(range(2017, 2019)))
+data.baixar('infracoes', anos=list(range(2017, 2019)))
 
 ```
