@@ -12,6 +12,11 @@ Para baixar dados anteriores a 2018, é necessário instalar `unrar`.
 brew install unrar
 ```
 
+**Para Linux**
+```
+apt-get install unrar
+```
+
 ## Uso
 O pacote pode ser obtido via `pip`.
 
