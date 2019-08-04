@@ -2,12 +2,14 @@ import requests
 import os
 from .Infracoes import Infracoes
 from .arquivo import extrair_arquivos
-
+import pandas as pd
 
 class RoadsApi:
     """ Classe usada para manipular dados abertos da Polícia
     Rodoviária Federal.
     """
+
+    TIPOS = ['infracoes', 'acidentes']
 
     def __init__(self):
         self.url = 'https://www.prf.gov.br/portal/dados-abertos/infracoes'
@@ -73,7 +75,7 @@ class RoadsApi:
         anos: list
             lista de anos dos dados
         """
-        if tipo not in ['infracoes', 'acidentes']:
+        if tipo not in self.TIPOS:
             self._exibir_erro("Tipo '{}' é inválido. ".format(tipo))
             return
 
@@ -103,3 +105,48 @@ class RoadsApi:
             # Carrega e descompacta arquivo comprimido
             formato_arquivo = dataset.headers['Content-Type'].split('/')[-1]
             extrair_arquivos(formato_arquivo, diretorio, dataset.content)
+
+    def dataframe(self, tipo: {'infracoes', 'acidentes'},
+               anos: list, caminho: str = os.getcwd()) -> pd.DataFrame:
+        """Trasforma os csvs em dataframes.
+
+        Parâmetros
+        ----------
+        tipo : {'infracoes', 'acidentes'}
+            tipo de dados que se deseja realizar o download (por padrão,
+            'infracoes')
+        caminho: str
+            o caminho da pasta onde serão adicionados os arquivos
+            (por padrão, a pasta atual).
+        anos: list
+            lista de anos dos dados
+        
+        Retorno 
+        -------
+        dataframe com todos os dados.
+        """   
+        # Verifica se tipo é válidos
+        if tipo not in self.TIPOS:
+            self._exibir_erro("Tipo '{}' é inválido. ".format(tipo))
+            return
+        
+        # Verifica se todos os anos foram baixados
+        for ano in anos:
+            pasta = '{}/{}/{}'.format(caminho, tipo, ano)
+            print(pasta)
+            if not os.path.exists(pasta):
+                # Se não estiver baixado, realizar o download
+                self.baixar(tipo, [ano], caminho)
+
+        # Recupera csvs e cria dataframe
+        dataframe = pd.DataFrame()  # Cria df vazio
+        for ano in anos:
+            pasta = '{}/{}/{}'.format(caminho, tipo, ano)
+            for arquivo in os.listdir(pasta):
+                caminho_arquivo = '{}/{}'.format(pasta, arquivo)
+                df = pd.read_csv(caminho_arquivo, encoding='latin1')
+                dataframe = dataframe.append(df, ignore_index=True)
+
+                del df  # Libera memória
+
+        return dataframe
