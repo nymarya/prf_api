@@ -11,6 +11,23 @@ class RoadsApi:
 
     TIPOS = ['infracoes', 'acidentes']
 
+    # Mapeamento de coluna que deve ser 
+    # filtrada para cada localidade e cada
+    # tipo de conjunto
+    COLUNAS = {
+        'infracoes': {
+            'estado': 'uf_infracao'
+        }
+    }
+
+    REGIOES = {
+        'CO': ['DF', 'GO', 'MS', 'MT'],
+        'N': ['AC', 'AP', 'AM', 'PA', 'RO', 'RR', 'TO'],
+        'NE': ['AL', 'BA', 'CE', 'MA', 'PB', 'PE', 'PI', 'RN', 'SE'],
+        'S': ['PR', 'RS', 'SC'],
+        'SE': ['ES', 'MG', 'RJ', 'SP']
+    }
+
     def __init__(self):
         self.url = 'https://www.prf.gov.br/portal/dados-abertos/infracoes'
         self.download_url = 'https://www.prf.gov.br/arquivos/index.php/s/{}/download'
@@ -107,7 +124,8 @@ class RoadsApi:
             extrair_arquivos(formato_arquivo, diretorio, dataset.content)
 
     def dataframe(self, tipo: {'infracoes', 'acidentes'},
-               anos: list, caminho: str = os.getcwd()) -> pd.DataFrame:
+                  anos: list, caminho: str = os.getcwd(), estado: str = None,
+                  regiao: {'NE', 'NO'} = None) -> pd.DataFrame:
         """Trasforma os csvs em dataframes.
 
         Parâmetros
@@ -120,12 +138,15 @@ class RoadsApi:
             (por padrão, a pasta atual).
         anos: list
             lista de anos dos dados
-        
-        Retorno 
+        estado: str
+            sigla do estado que servirá para a filtragem
+        regiao: {'CO','N', 'NE', 'S', 'SE'}
+            sigla da região cujos estados serão filtrados
+        Retorno
         -------
         dataframe com todos os dados.
-        """   
-        # Verifica se tipo é válidos
+        """
+        # Verifica se tipo é válido
         if tipo not in self.TIPOS:
             self._exibir_erro("Tipo '{}' é inválido. ".format(tipo))
             return
