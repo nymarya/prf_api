@@ -4,6 +4,7 @@ from .Infracoes import Infracoes
 from .arquivo import extrair_arquivos
 import pandas as pd
 
+
 class RoadsApi:
     """ Classe usada para manipular dados abertos da Polícia
     Rodoviária Federal.
@@ -11,7 +12,7 @@ class RoadsApi:
 
     TIPOS = ['infracoes', 'acidentes']
 
-    # Mapeamento de coluna que deve ser 
+    # Mapeamento de coluna que deve ser
     # filtrada para cada localidade e cada
     # tipo de conjunto
     COLUNAS = {
@@ -75,6 +76,28 @@ class RoadsApi:
             os.makedirs(caminho)
 
         return caminho
+
+    def _filtrar_dataframe(self, df: pd.DataFrame, coluna: str,
+                           area: {str, list}) -> pd.DataFrame:
+        """ Filtra dataframe de acordo com estado ou área.
+
+        Parâmetros
+        ----------
+        df: pd.DataFrame
+            dataframe sobre o qual se aplica a filtragem
+        coluna: str
+            coluna sobre a qual se aplica o filtro
+        area: str  ou list
+            estado (sigla) ou regiao (lista de estados)
+        """
+        if type(area) == str:
+            query = " {} == '{}'"
+        elif type(area) == list:
+            query = "{} in {}"
+        else:
+            self._exibir_erro("Área {} não disponível".format(area))
+
+        return df.query(query.format(coluna, area))
 
     def baixar(self, tipo: {'infracoes', 'acidentes'},
                anos: list, caminho: str = os.getcwd()):
@@ -150,18 +173,18 @@ class RoadsApi:
         if tipo not in self.TIPOS:
             self._exibir_erro("Tipo '{}' é inválido. ".format(tipo))
             return
-        
+
         # Verifica se estado é válido
         estados = [x for regiao in list(self.REGIOES.values()) for x in regiao]
         if (estado is not None) and (estado not in estados):
             self._exibir_erro("Estado '{}' é inválido. ".format(estado))
-            return  
+            return
 
         # Verifica se região é válida
         if (regiao is not None) and (regiao not in self.REGIOES.keys()):
             self._exibir_erro("Região '{}' é inválida. ".format(regiao))
-            return   
-        
+            return
+
         # Verifica se todos os anos foram baixados
         for ano in anos:
             pasta = '{}/{}/{}'.format(caminho, tipo, ano)
@@ -177,15 +200,15 @@ class RoadsApi:
             for arquivo in os.listdir(pasta):
                 caminho_arquivo = '{}/{}'.format(pasta, arquivo)
                 df = pd.read_csv(caminho_arquivo, encoding='latin1')
+
+                coluna = self.COLUNAS[tipo]['estado']
                 # Realiza a filtragem, se algum parâmetro de busca for usado
                 if estado is not None:
-                    coluna = self.COLUNAS[tipo]['estado']
-                    df = df.query( " {} == '{}'".format(coluna, estado))
+                    df = self._filtrar_dataframe(df, coluna, estado)
                 elif regiao is not None:
                     # Filtra todos os estados da região
-                    regioes = self.REGIOES[regiao]
-                    coluna = self.COLUNAS[tipo]['estado']
-                    df = df.query( " {} in {}".format(coluna, regioes))  #TODO: tranformar em função privada
+                    df = self._filtrar_dataframe(df, coluna,
+                                                 self.REGIOES[regiao])
                 dataframe = dataframe.append(df, ignore_index=True)
 
                 del df  # Libera memória
