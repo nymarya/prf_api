@@ -125,7 +125,7 @@ class RoadsApi:
 
     def dataframe(self, tipo: {'infracoes', 'acidentes'},
                   anos: list, caminho: str = os.getcwd(), estado: str = None,
-                  regiao: {'NE', 'NO'} = None) -> pd.DataFrame:
+                  regiao: {'CO','N', 'NE', 'S', 'SE'} = None) -> pd.DataFrame:
         """Trasforma os csvs em dataframes.
 
         Parâmetros
@@ -154,7 +154,6 @@ class RoadsApi:
         # Verifica se todos os anos foram baixados
         for ano in anos:
             pasta = '{}/{}/{}'.format(caminho, tipo, ano)
-            print(pasta)
             if not os.path.exists(pasta):
                 # Se não estiver baixado, realizar o download
                 self.baixar(tipo, [ano], caminho)
@@ -166,6 +165,10 @@ class RoadsApi:
             for arquivo in os.listdir(pasta):
                 caminho_arquivo = '{}/{}'.format(pasta, arquivo)
                 df = pd.read_csv(caminho_arquivo, encoding='latin1')
+                # Realiza a filtragem, se algum parâmetro de busca for usado
+                if estado is not None:
+                    coluna = self.COLUNAS[tipo]['estado']
+                    df = df.query( " {} == '{}'".format(coluna, estado))
                 dataframe = dataframe.append(df, ignore_index=True)
 
                 del df  # Libera memória
