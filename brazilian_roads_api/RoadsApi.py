@@ -169,6 +169,11 @@ class RoadsApi:
                 if estado is not None:
                     coluna = self.COLUNAS[tipo]['estado']
                     df = df.query( " {} == '{}'".format(coluna, estado))
+                elif regiao is not None:
+                    # Filtra todos os estados da região
+                    regioes = self.REGIOES[regiao]
+                    coluna = self.COLUNAS[tipo]['estado']
+                    df = df.query( " {} in {}".format(coluna, regioes))  #TODO: tranformar em função privada
                 dataframe = dataframe.append(df, ignore_index=True)
 
                 del df  # Libera memória
