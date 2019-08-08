@@ -4,7 +4,7 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name="brazilian_roads_api",
+    name="api_prf",
     version="0.0.1",
     author="Mayra Azevedo",
     author_email="mayradazevedo@ufrn.edu.br",
