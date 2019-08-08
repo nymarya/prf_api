@@ -151,6 +151,17 @@ class RoadsApi:
             self._exibir_erro("Tipo '{}' é inválido. ".format(tipo))
             return
         
+        # Verifica se estado é válido
+        estados = [x for regiao in list(self.REGIOES.values()) for x in regiao]
+        if (estado is not None) and (estado not in estados):
+            self._exibir_erro("Estado '{}' é inválido. ".format(estado))
+            return  
+
+        # Verifica se região é válida
+        if (regiao is not None) and (regiao not in self.REGIOES.keys()):
+            self._exibir_erro("Região '{}' é inválida. ".format(regiao))
+            return   
+        
         # Verifica se todos os anos foram baixados
         for ano in anos:
             pasta = '{}/{}/{}'.format(caminho, tipo, ano)
