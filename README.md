@@ -12,6 +12,11 @@ Para baixar dados anteriores a 2018, é necessário instalar `unrar`.
 brew install unrar
 ```
 
+**Para Linux**
+```
+apt-get install unrar
+```
+
 ## Uso
 O pacote pode ser obtido via `pip`.
 
@@ -27,5 +32,7 @@ from brazilian_roads_api import RoadsApi
 data = RoadsApi()
 
 data.baixar('infracoes', anos=list(range(2017, 2019)))
+
+df = data.dataframe('infracoes', anos=list(range(2017, 2019)), estado='RN')
 
 ```
