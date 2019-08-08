@@ -161,6 +161,7 @@ class RoadsApi:
         # Recupera csvs e cria dataframe
         dataframe = pd.DataFrame()  # Cria df vazio
         for ano in anos:
+            print(">>> Criando dataframe com ano {}...".format(ano))
             pasta = '{}/{}/{}'.format(caminho, tipo, ano)
             for arquivo in os.listdir(pasta):
                 caminho_arquivo = '{}/{}'.format(pasta, arquivo)
