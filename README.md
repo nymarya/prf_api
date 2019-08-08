@@ -33,4 +33,6 @@ data = RoadsApi()
 
 data.baixar('infracoes', anos=list(range(2017, 2019)))
 
+df = data.dataframe('infracoes', anos=list(range(2017, 2019)), estado='RN')
+
 ```
