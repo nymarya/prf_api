@@ -1,5 +1,6 @@
 from bs4 import BeautifulSoup
 
+
 class Infracoes:
 
     def __init__(self):

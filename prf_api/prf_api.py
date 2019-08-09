@@ -1,12 +1,13 @@
+# -*- coding: utf-8 -*-
+
 import requests
 import os
 from .Infracoes import Infracoes
 from .arquivo import extrair_arquivos
-import pandas as pd
-
+import pandas as p
 
 class RoadsApi:
-    """ Classe usada para manipular dados abertos da Polícia
+    """ Classe principal usada para manipular dados abertos da Polícia
     Rodoviária Federal.
     """
 
