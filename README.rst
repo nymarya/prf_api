@@ -29,40 +29,46 @@ API de dados abertos da PRF
 Esta pacote tem o objetivo de facilitar o download e o uso dos [dados abertos da PRF](http://prf.gov.br/portal/dados-abertos), 
 que contém informações sobre acidentes e infrações cometidas nas rodovias federais do Brasil.
 
-## Dependências
+Dependências
+----
 
 Para baixar dados anteriores a 2018, é necessário instalar `unrar`.
 
 **Para MacOS**
 
-```
+.. parsed-literal::
+
 brew install unrar
-```
+
 
 **Para Linux**
-```
-apt-get install unrar
-```
 
-## Uso
+.. parsed-literal::
+
+apt-get install unrar
+
+
+Uso
+----
+
 O pacote pode ser obtido via `pip`.
 
-```
+.. code:: shell
+
 pip install brazilian_roads_api
-```
+
 
 Para utlizar, basta instanciar a classe:
 
-```python
-from brazilian_roads_api import RoadsApi
+.. code:: python
 
-data = RoadsApi()
+  from brazilian_roads_api import RoadsApi
 
-data.baixar('infracoes', anos=list(range(2017, 2019)))
+  data = RoadsApi()
 
-df = data.dataframe('infracoes', anos=list(range(2017, 2019)), estado='RN')
+  data.baixar('infracoes', anos=list(range(2017, 2019)))
 
-```
+  df = data.dataframe('infracoes', anos=list(range(2017, 2019)), estado='RN')
 
 Credits
 -------
