@@ -26,7 +26,7 @@ API de dados abertos da PRF
 * Free software: MIT license
 * Documentation: https://prf-api.readthedocs.io.
 
-Esta pacote tem o objetivo de facilitar o download e o uso dos [dados abertos da PRF](http://prf.gov.br/portal/dados-abertos), 
+Esta pacote tem o objetivo de facilitar o download e o uso dos `dados abertos da PRF`_, 
 que contém informações sobre acidentes e infrações cometidas nas rodovias federais do Brasil.
 
 Dependências
@@ -38,14 +38,14 @@ Para baixar dados anteriores a 2018, é necessário instalar `unrar`.
 
 .. parsed-literal::
 
-brew install unrar
+        brew install unrar
 
 
 **Para Linux**
 
-.. parsed-literal::
+.. code::
 
-apt-get install unrar
+        apt-get install unrar
 
 
 Uso
@@ -55,7 +55,7 @@ O pacote pode ser obtido via `pip`.
 
 .. code:: shell
 
-pip install brazilian_roads_api
+        pip install brazilian_roads_api
 
 
 Para utlizar, basta instanciar a classe:
@@ -70,10 +70,11 @@ Para utlizar, basta instanciar a classe:
 
   df = data.dataframe('infracoes', anos=list(range(2017, 2019)), estado='RN')
 
-Credits
+Créditos
 -------
 
-This package was created with Cookiecutter_ and the `audreyr/cookiecutter-pypackage`_ project template.
+Este pacote foi criado com Cookiecutter_ e o template `audreyr/cookiecutter-pypackage`_ .
 
 .. _Cookiecutter: https://github.com/audreyr/cookiecutter
 .. _`audreyr/cookiecutter-pypackage`: https://github.com/audreyr/cookiecutter-pypackage
+.. _`dados abertos da PRF`: http://prf.gov.br/portal/dados-abertos
