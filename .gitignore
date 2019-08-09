@@ -104,4 +104,4 @@ venv.bak/
 .mypy_cache/
 
 #tests
-brazilian_roads_api/tests
+infracoes/

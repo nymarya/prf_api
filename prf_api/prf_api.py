@@ -2,11 +2,12 @@
 
 import requests
 import os
-from .Infracoes import Infracoes
+from .infracoes import Infracoes
 from .arquivo import extrair_arquivos
-import pandas as p
+import pandas as pd
 
-class RoadsApi:
+
+class PRFApi:
     """ Classe principal usada para manipular dados abertos da Polícia
     Rodoviária Federal.
     """
@@ -133,7 +134,8 @@ class RoadsApi:
         for ano in anos:
             try:
                 link = self.download_url.format(dados.links[ano])
-                print("Buscando datasets de {} para o ano {}...".format(tipo, ano))
+                print("Buscando datasets de {} para o ano {}...".format(tipo,
+                                                                        ano))
                 dataset = requests.get(link)
             except requests.exceptions.ConnectionError as ex:
                 self._exibir_erro("Falha de conexão. "
@@ -149,7 +151,7 @@ class RoadsApi:
 
     def dataframe(self, tipo: {'infracoes', 'acidentes'},
                   anos: list, caminho: str = os.getcwd(), estado: str = None,
-                  regiao: {'CO','N', 'NE', 'S', 'SE'} = None) -> pd.DataFrame:
+                  regiao: {'CO', 'N', 'NE', 'S', 'SE'} = None) -> pd.DataFrame:
         """Trasforma os csvs em dataframes.
 
         Parâmetros
@@ -161,11 +163,12 @@ class RoadsApi:
             o caminho da pasta onde serão adicionados os arquivos
             (por padrão, a pasta atual).
         anos: list
-            lista de anos dos dados
+            lista de anos dos dados.
         estado: str
-            sigla do estado que servirá para a filtragem
+            sigla do estado que servirá para a filtragem.
         regiao: {'CO','N', 'NE', 'S', 'SE'}
-            sigla da região cujos estados serão filtrados
+            sigla da região cujos estados serão filtrados.
+
         Retorno
         -------
         dataframe com todos os dados.

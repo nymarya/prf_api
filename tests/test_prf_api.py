@@ -9,6 +9,7 @@ from click.testing import CliRunner
 
 from prf_api import prf_api
 from prf_api import cli
+import os
 
 
 @pytest.fixture
@@ -21,10 +22,28 @@ def response():
     # return requests.get('https://github.com/audreyr/cookiecutter-pypackage')
 
 
-def test_content(response):
+def test_init():
     """Sample pytest test function with the pytest fixture as an argument."""
-    # from bs4 import BeautifulSoup
-    # assert 'GitHub' in BeautifulSoup(response.content).title.string
+    prf_data = prf_api.PRFApi()
+    prf_data.baixar('infracoes', anos=[2018, 2019])
+    caminho = os.getcwd() + "/infracoes"
+    assert os.path.exists(caminho)
+    assert os.path.exists(caminho + "/2018")
+    for mes in ['abr', 'ago', 'dez', 'fev', 'jan', 'jul',
+                'jun', 'mai', 'mar', 'nov', 'out', 'set']:
+        assert os.path.exists(caminho + "/2018/" + mes + ".csv")
+
+
+def test_dataframe():
+    """ Testa criação de dataframe"""
+    prf_data = prf_api.PRFApi()
+    df = prf_data.dataframe('infracoes', anos=list(range(2017, 2019)),
+                            estado='RN')
+    assert df.uf_infracao.unique() == ['RN']
+
+    anos = df.dat_infracao.str.split('-', n=1, expand=True)[0].unique()
+    assert sorted(anos) == ['2017', '2018']
+    assert len(df.columns) == 22
 
 
 def test_command_line_interface():

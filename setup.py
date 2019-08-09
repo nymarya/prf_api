@@ -45,7 +45,7 @@ setup(
     license="MIT license",
     long_description=readme + '\n\n' + history,
     include_package_data=True,
-    keywords=['prf', 'wrapper']
+    keywords=['prf', 'wrapper'],
     name='prf_api',
     packages=find_packages(include=['prf_api']),
     setup_requires=setup_requirements,
