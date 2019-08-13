@@ -4,7 +4,7 @@ PRF API
 
 
 .. image:: https://img.shields.io/pypi/v/prf_api.svg
-        :target: https://pypi.python.org/pypi/prf_api
+        :target: https://pypi.python.org/pypi/prf-api
 
 .. image:: https://img.shields.io/travis/nymarya/prf_api.svg
         :target: https://travis-ci.org/nymarya/prf_api
@@ -71,7 +71,7 @@ Para utlizar, basta instanciar a classe:
   df = data.dataframe('infracoes', anos=list(range(2017, 2019)), estado='RN')
 
 Créditos
--------
+--------
 
 Este pacote foi criado com Cookiecutter_ e o template `audreyr/cookiecutter-pypackage`_ .
 
