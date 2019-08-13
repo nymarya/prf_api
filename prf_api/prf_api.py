@@ -25,7 +25,10 @@ Todas as causas e tipos de acidentes (a partir de 2017)'}
     COLUNAS = {
         'infracoes': {
             'estado': 'uf_infracao'
-        }
+        },
+        'acidentes_pessoa': {'estado': 'uf'},
+        'acidentes_ocorrencia': {'estado': 'uf'},
+        'acidentes_agrupados': {'estado': 'uf'},
     }
 
     REGIOES = {
