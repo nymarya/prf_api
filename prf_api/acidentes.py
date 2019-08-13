@@ -15,49 +15,31 @@ class Acidente:
     def __init__(self):
         self.url = 'https://www.prf.gov.br/portal/dados-abertos/acidentes/acidentes'
         self._tipo = ''
+        self.links = {}
 
-    def carregar_links(self, response):
+    def carregar_links(self, response, tipo):
         """ Carrega links disponíveis na página de infrações. """
         # Recupera o HTML
         html_data = response.text
         # Cria um objeto BeautifulSoup a partir do HTML
         soup = BeautifulSoup(html_data, features="html.parser")
 
-        tables = soup.findAll("table", {"class": "listing"})
+        # Recupera tabelas com título
+        tabelas = soup.findAll("table", {"class": "listing"})
 
-        for table in tables:
-            title = table.find('tbody').find('tr').find('th').find('h2')
-            if title == tipo:
+        # Recupera tabelas com links
+        tabelas_links = soup.findAll("table", {"class": "plain"})
+
+        links = []
+
+        # Busca links
+        for i, tabela in enumerate(tabelas):
+            titulo = tabela.find('tbody').find('tr').find('th').find('h2')
+            # Checa título da tabela
+            if titulo.text == tipo:
+                links = tabelas_links[i].findAll('a')
                 break
 
         # Filtra links referentes aos anos
-        self.links = {int(link.text): link['href'].split('/')[-1]
-                      for link in links if link.text.startswith('20')}
-
-
-class AcidenteOcorrencia(Acidente):
-    """ Classe responsável por manter atributos referentes a acidentes
-    agrupados por ocorrência.
-    """
-
-    def __init__(self):
-        self._tipo = 'Agrupados por ocorrência'
-
-
-class AcidentePessoa(Acidente):
-    """ Classe responsável por manter atributos referentes a acidentes
-    agrupados por pessoa.
-    """
-
-    def __init__(self):
-        self._tipo = 'Agrupados por pessoa'
-
-
-class AcidenteAgrupado(Acidente):
-    """ Classe responsável por manter atributos referentes a acidentes
-    agrupados.
-    """
-
-    def __init__(self):
-        self._tipo = 'Agrupados por pessoa - \
-                Todas as causas e tipos de acidentes (a partir de 2017)'
+        self.links[tipo] = {int(link.text.split('-')[0]): link['href'].split('/')[-1]
+                            for link in links if link.text.startswith('20')}

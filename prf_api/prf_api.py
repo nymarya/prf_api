@@ -17,7 +17,7 @@ class PRFApi:
              'acidentes_pessoa': 'Agrupados por pessoa',
              'acidentes_ocorrencia': 'Agrupados por ocorrência',
              'acidentes_agrupados': 'Agrupados por pessoa - \
-                Todas as causas e tipos de acidentes (a partir de 2017)'}
+Todas as causas e tipos de acidentes (a partir de 2017)'}
 
     # Mapeamento de coluna que deve ser
     # filtrada para cada localidade e cada
@@ -61,9 +61,6 @@ class PRFApi:
         """Função que busca o link para cada infração"""
         self.infracoes = Infracoes()
         self.acidentes = Acidente()
-        self.acidentes_pessoa = AcidentePessoa()
-        self.acidentes_agrupados = AcidenteAgrupado()
-        self.acidentes_ocorrencia = AcidenteOcorrencia()
         try:
             response_infracoes = requests.get(self.infracoes.url)
             response_acidentes = requests.get(self.acidentes.url)
@@ -77,9 +74,9 @@ class PRFApi:
             return
 
         self.infracoes.carregar_links(response_infracoes)
-        self.acidentes_agrupados.carregar_links(response_acidentes)
-        self.acidentes_pessoa.carregar_links(response_acidentes)
-        self.acidentes_ocorrencia.carregar_links(response_acidentes)
+        for tipo in self.TIPOS.values():
+            if tipo is not "infracoes":
+                self.acidentes.carregar_links(response_acidentes, tipo)
 
     def _criar_diretorio(self, caminho: str) -> str:
         """Cria o diretório, caso ele não exista.
@@ -115,7 +112,7 @@ class PRFApi:
         return df.query(query.format(coluna, area))
 
     def baixar(self, tipo: {'infracoes', 'acidentes'},
-               anos: list, caminho: str = os.getcwd()):
+               anos: list = None, caminho: str = os.getcwd()):
         """Realiza o download dos conjuntos de dados de acordo com o
         tipo desejado
 
@@ -134,19 +131,22 @@ class PRFApi:
             self._exibir_erro("Tipo '{}' é inválido. ".format(tipo))
             return
 
-        dados = self.infracoes if tipo == 'infracoes' else ''
+        links = self.infracoes.links if tipo == 'infracoes' else self.acidentes.links[self.TIPOS[tipo]]
+
+        # Se não for passada uma listar, baixar todo os anos
+        if anos is None:
+            anos = links.keys()
 
         # Checa se os anos são válidos
         for ano in anos:
-            if not (ano in dados.links.keys()):
+            if not (ano in links.keys()):
                 self._exibir_erro("Ano {} não disponível".format(ano))
-                return
 
         # Realiza o download
         caminho = self._criar_diretorio('{}/{}'.format(caminho, tipo))
         for ano in anos:
             try:
-                link = self.download_url.format(dados.links[ano])
+                link = self.download_url.format(links[ano])
                 print("Buscando datasets de {} para o ano {}...".format(tipo,
                                                                         ano))
                 dataset = requests.get(link)
@@ -164,7 +164,7 @@ class PRFApi:
 
     def dataframe(self, tipo: {'infracoes', 'acidentes'},
                   anos: list, caminho: str = os.getcwd(), estado: str = None,
-                  regiao: {'CO', 'N', 'NE', 'S', 'SE'} = None) -> pd.DataFrame:
+                  regiao: {'CO', 'N', 'NE', 'S', 'SE'}= None) -> pd.DataFrame:
         """Trasforma os csvs em dataframes.
 
         Parâmetros
