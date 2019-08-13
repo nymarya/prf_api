@@ -55,7 +55,7 @@ O pacote pode ser obtido via `pip`.
 
 .. code:: shell
 
-        pip install brazilian_roads_api
+        pip install prf-api
 
 
 Para utlizar, basta instanciar a classe:
