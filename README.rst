@@ -30,7 +30,7 @@ Esta pacote tem o objetivo de facilitar o download e o uso dos `dados abertos da
 que contém informações sobre acidentes e infrações cometidas nas rodovias federais do Brasil.
 
 Dependências
-----
+------------
 
 Para baixar dados anteriores a 2018, é necessário instalar `unrar`.
 
