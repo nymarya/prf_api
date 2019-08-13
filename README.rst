@@ -3,7 +3,7 @@ PRF API
 =======
 
 
-.. image:: https://img.shields.io/pypi/v/prf_api.svg
+.. image:: https://img.shields.io/pypi/v/prf-api.svg
         :target: https://pypi.python.org/pypi/prf-api
 
 .. image:: https://img.shields.io/travis/nymarya/prf_api.svg
