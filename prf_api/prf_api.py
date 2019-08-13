@@ -136,7 +136,7 @@ Todas as causas e tipos de acidentes (a partir de 2017)'}
         if tipo == "infracoes":
             links = self.infracoes.links
         else:
-            self.acidentes.links[self.TIPOS[tipo]]
+            links = self.acidentes.links[self.TIPOS[tipo]]
 
         # Se não for passada uma lista, baixar todo os anos
         if anos is None:
@@ -168,7 +168,7 @@ Todas as causas e tipos de acidentes (a partir de 2017)'}
             extrair_arquivos(formato_arquivo, diretorio, dataset.content)
 
     def dataframe(self, tipo: {'infracoes', 'acidentes_pessoa',
-                  'acidentes_ocorrencia', 'acidentes_agrupados'}, anos: list,
+                  'acidentes_ocorrencia', 'acidentes_agrupados'}, anos: list = None,
                   caminho: str = os.getcwd(), estado: str = None,
                   regiao: {'CO', 'N', 'NE', 'S', 'SE'}=None) -> pd.DataFrame:
         """Trasforma os csvs em dataframes.
@@ -197,6 +197,15 @@ Todas as causas e tipos de acidentes (a partir de 2017)'}
         if tipo not in self.TIPOS:
             self._exibir_erro("Tipo '{}' é inválido. ".format(tipo))
             return
+
+        if tipo == "infracoes":
+            links = self.infracoes.links
+        else:
+            links = self.acidentes.links[self.TIPOS[tipo]]
+
+        # Se não for passada uma lista, baixar todo os anos
+        if anos is None:
+            anos = links.keys()
 
         # Verifica se estado é válido
         estados = [x for regiao in list(self.REGIOES.values()) for x in regiao]
