@@ -14,10 +14,11 @@ def extrair_rar(rf: RarFile, caminho: str):
     caminho: str
         caminho para pasta onde os arquivos devem ser salvos.
     """
+    ano = caminho.split('/')[-1]
+    n_arquivos = len(rf.infolist())
     for f in rf.infolist():
         # Filtra arquivos csvs comprimidos
         if f.filename.endswith('csv'):
-            ano = caminho.split('/')[-1]
             filename = f.filename.split('/')[-1]
             print("\033[94m>> Baixando {}/{}\033[0m".format(ano, filename))
             with open(caminho + '/' + filename, "wb") as of:
@@ -34,6 +35,7 @@ def extrair_zip(zp: ZipFile, caminho: str):
     caminho: str
         caminho para pasta onde os arquivos devem ser salvos.
     """
+    ano = caminho.split('/')[-1]
     for f in zp.namelist():
         if f.endswith('csv'):
             filename = f.split('/')[-1]

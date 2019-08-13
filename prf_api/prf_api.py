@@ -3,7 +3,7 @@
 import requests
 import os
 from .infracoes import Infracoes
-from .acidentes import Acidente, AcidenteAgrupado, AcidenteOcorrencia, AcidentePessoa
+from .acidentes import Acidente
 from .arquivo import extrair_arquivos
 import pandas as pd
 
