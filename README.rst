@@ -62,9 +62,9 @@ Para utlizar, basta instanciar a classe:
 
 .. code:: python
 
-  from brazilian_roads_api import RoadsApi
+  from prf_api import prf_api
 
-  data = RoadsApi()
+  data = prf_api.PRFApi()
 
   data.baixar('infracoes', anos=list(range(2017, 2019)))
 
