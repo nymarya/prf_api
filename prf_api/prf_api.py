@@ -236,7 +236,11 @@ Todas as causas e tipos de acidentes (a partir de 2017)'}
             pasta = '{}/{}/{}'.format(caminho, tipo, ano)
             for arquivo in os.listdir(pasta):
                 caminho_arquivo = '{}/{}'.format(pasta, arquivo)
-                df = pd.read_csv(caminho_arquivo, encoding='latin1')
+                try:
+                    df = pd.read_csv(caminho_arquivo, encoding='latin1')
+                except pd.errors.ParserError:
+                    df = pd.read_csv(caminho_arquivo, encoding='latin1',
+                                     sep=';')
 
                 coluna = self.COLUNAS[tipo]['estado']
                 # Realiza a filtragem, se algum parâmetro de busca for usado
