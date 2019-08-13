@@ -14,8 +14,9 @@ class Acidente:
 
     def __init__(self):
         self.url = 'https://www.prf.gov.br/portal/dados-abertos/acidentes/acidentes'
+        self._tipo = ''
 
-    def carregar_links(self, response, tipo: str):
+    def carregar_links(self, response):
         """ Carrega links disponíveis na página de infrações. """
         # Recupera o HTML
         html_data = response.text
@@ -31,9 +32,32 @@ class Acidente:
 
         # Filtra links referentes aos anos
         self.links = {int(link.text): link['href'].split('/')[-1]
-                        for link in links if link.text.startswith('20')}
+                      for link in links if link.text.startswith('20')}
 
-class AcidenteOcorrencia:
+
+class AcidenteOcorrencia(Acidente):
     """ Classe responsável por manter atributos referentes a acidentes
     agrupados por ocorrência.
     """
+
+    def __init__(self):
+        self._tipo = 'Agrupados por ocorrência'
+
+
+class AcidentePessoa(Acidente):
+    """ Classe responsável por manter atributos referentes a acidentes
+    agrupados por pessoa.
+    """
+
+    def __init__(self):
+        self._tipo = 'Agrupados por pessoa'
+
+
+class AcidenteAgrupado(Acidente):
+    """ Classe responsável por manter atributos referentes a acidentes
+    agrupados.
+    """
+
+    def __init__(self):
+        self._tipo = 'Agrupados por pessoa - \
+                Todas as causas e tipos de acidentes (a partir de 2017)'

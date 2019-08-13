@@ -3,6 +3,7 @@
 import requests
 import os
 from .infracoes import Infracoes
+from .acidentes import Acidente, AcidenteAgrupado, AcidenteOcorrencia, AcidentePessoa
 from .arquivo import extrair_arquivos
 import pandas as pd
 
@@ -12,7 +13,11 @@ class PRFApi:
     Rodoviária Federal.
     """
 
-    TIPOS = ['infracoes', 'acidentes']
+    TIPOS = {'infracoes': 'infracoes',
+             'acidentes_pessoa': 'Agrupados por pessoa',
+             'acidentes_ocorrencia': 'Agrupados por ocorrência',
+             'acidentes_agrupados': 'Agrupados por pessoa - \
+                Todas as causas e tipos de acidentes (a partir de 2017)'}
 
     # Mapeamento de coluna que deve ser
     # filtrada para cada localidade e cada
@@ -55,8 +60,13 @@ class PRFApi:
     def _carregar_links(self):
         """Função que busca o link para cada infração"""
         self.infracoes = Infracoes()
+        self.acidentes = Acidente()
+        self.acidentes_pessoa = AcidentePessoa()
+        self.acidentes_agrupados = AcidenteAgrupado()
+        self.acidentes_ocorrencia = AcidenteOcorrencia()
         try:
             response_infracoes = requests.get(self.infracoes.url)
+            response_acidentes = requests.get(self.acidentes.url)
         except requests.exceptions.ConnectionError as ex:
             self._exibir_erro("Falha de conexão. "
                               "Verifique sua conexão e tente novamente.", ex)
@@ -67,6 +77,9 @@ class PRFApi:
             return
 
         self.infracoes.carregar_links(response_infracoes)
+        self.acidentes_agrupados.carregar_links(response_acidentes)
+        self.acidentes_pessoa.carregar_links(response_acidentes)
+        self.acidentes_ocorrencia.carregar_links(response_acidentes)
 
     def _criar_diretorio(self, caminho: str) -> str:
         """Cria o diretório, caso ele não exista.
@@ -117,7 +130,7 @@ class PRFApi:
         anos: list
             lista de anos dos dados
         """
-        if tipo not in self.TIPOS:
+        if tipo not in self.TIPOS.keys():
             self._exibir_erro("Tipo '{}' é inválido. ".format(tipo))
             return
 
