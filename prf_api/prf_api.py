@@ -111,14 +111,16 @@ Todas as causas e tipos de acidentes (a partir de 2017)'}
 
         return df.query(query.format(coluna, area))
 
-    def baixar(self, tipo: {'infracoes', 'acidentes'},
+    def baixar(self, tipo: {'infracoes', 'acidentes_pessoa',
+               'acidentes_ocorrencia', 'acidentes_agrupados'},
                anos: list = None, caminho: str = os.getcwd()):
         """Realiza o download dos conjuntos de dados de acordo com o
         tipo desejado
 
         Parâmetros
         ----------
-        tipo : {'infracoes', 'acidentes'}
+        tipo : {'infracoes', 'acidentes_pessoa', 'acidentes_ocorrencia',
+                'acidentes_agrupados'}
             tipo de dados que se deseja realizar o download (por padrão,
             'infracoes')
         caminho: str
@@ -131,9 +133,12 @@ Todas as causas e tipos de acidentes (a partir de 2017)'}
             self._exibir_erro("Tipo '{}' é inválido. ".format(tipo))
             return
 
-        links = self.infracoes.links if tipo == 'infracoes' else self.acidentes.links[self.TIPOS[tipo]]
+        if tipo == "infracoes":
+            links = self.infracoes.links
+        else:
+            self.acidentes.links[self.TIPOS[tipo]]
 
-        # Se não for passada uma listar, baixar todo os anos
+        # Se não for passada uma lista, baixar todo os anos
         if anos is None:
             anos = links.keys()
 
@@ -162,14 +167,16 @@ Todas as causas e tipos de acidentes (a partir de 2017)'}
             formato_arquivo = dataset.headers['Content-Type'].split('/')[-1]
             extrair_arquivos(formato_arquivo, diretorio, dataset.content)
 
-    def dataframe(self, tipo: {'infracoes', 'acidentes'},
-                  anos: list, caminho: str = os.getcwd(), estado: str = None,
-                  regiao: {'CO', 'N', 'NE', 'S', 'SE'}= None) -> pd.DataFrame:
+    def dataframe(self, tipo: {'infracoes', 'acidentes_pessoa',
+                  'acidentes_ocorrencia', 'acidentes_agrupados'}, anos: list,
+                  caminho: str = os.getcwd(), estado: str = None,
+                  regiao: {'CO', 'N', 'NE', 'S', 'SE'}=None) -> pd.DataFrame:
         """Trasforma os csvs em dataframes.
 
         Parâmetros
         ----------
-        tipo : {'infracoes', 'acidentes'}
+        tipo : {'infracoes', 'acidentes_pessoa', 'acidentes_ocorrencia',
+                'acidentes_agrupados'}
             tipo de dados que se deseja realizar o download (por padrão,
             'infracoes')
         caminho: str
