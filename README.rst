@@ -9,12 +9,7 @@ PRF API
 .. image:: https://img.shields.io/travis/nymarya/prf_api.svg
         :target: https://travis-ci.org/nymarya/prf_api
 
-.. image:: https://readthedocs.org/projects/prf-api/badge/?version=latest
-        :target: https://prf-api.readthedocs.io/en/latest/?badge=latest
-        :alt: Documentation Status
-
-
-.. image:: https://pyup.io/repos/github/nymarya/prf_api/shield.svg
+.. image:: https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square
      :target: https://pyup.io/repos/github/nymarya/prf_api/
      :alt: Updates
 
@@ -22,9 +17,6 @@ PRF API
 
 API de dados abertos da PRF
 
-
-* Free software: MIT license
-* Documentation: https://prf-api.readthedocs.io.
 
 Esta pacote tem o objetivo de facilitar o download e o uso dos `dados abertos da PRF`_, 
 que contém informações sobre acidentes e infrações cometidas nas rodovias federais do Brasil.
