@@ -9,7 +9,7 @@ PRF API
 .. image:: https://img.shields.io/travis/nymarya/prf_api.svg
         :target: https://travis-ci.org/nymarya/prf_api
 
-.. image:: https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square
+.. image:: https://img.shields.io/badge/license-MIT-red.svg
      :target: https://pyup.io/repos/github/nymarya/prf_api/
      :alt: Updates
 
