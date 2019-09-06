@@ -13,7 +13,7 @@ class Acidente:
     """
 
     def __init__(self):
-        self.url = 'https://www.portal.prf.gov.br/portal/dados-abertos/acidentes/acidentes'
+        self.url = 'https://portal.prf.gov.br/portal/dados-abertos/acidentes/acidentes'
         self._tipo = ''
         self.links = {}
 
