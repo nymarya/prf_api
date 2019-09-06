@@ -69,4 +69,4 @@ Este pacote foi criado com Cookiecutter_ e o template `audreyr/cookiecutter-pypa
 
 .. _Cookiecutter: https://github.com/audreyr/cookiecutter
 .. _`audreyr/cookiecutter-pypackage`: https://github.com/audreyr/cookiecutter-pypackage
-.. _`dados abertos da PRF`: http://prf.gov.br/portal/dados-abertos
+.. _`dados abertos da PRF`: https://portal.prf.gov.br/portal/dados-abertos
