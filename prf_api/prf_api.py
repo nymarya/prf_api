@@ -41,7 +41,7 @@ Todas as causas e tipos de acidentes (a partir de 2017)'}
 
     def __init__(self):
         self.url = 'https://www.prf.gov.br/portal/dados-abertos/infracoes'
-        self.download_url = 'https://www.prf.gov.br/arquivos/index.php/s/{}/download'
+        self.download_url = 'https://www1.prf.gov.br/arquivos/index.php/{}/download'
 
         self._carregar_links()
 
@@ -115,7 +115,7 @@ Todas as causas e tipos de acidentes (a partir de 2017)'}
         return df.query(query.format(coluna, area))
 
     def baixar(self, tipo: {'infracoes', 'acidentes_pessoa',
-               'acidentes_ocorrencia', 'acidentes_agrupados'},
+                            'acidentes_ocorrencia', 'acidentes_agrupados'},
                anos: list = None, caminho: str = os.getcwd()):
         """Realiza o download dos conjuntos de dados de acordo com o
         tipo desejado
@@ -161,17 +161,18 @@ Todas as causas e tipos de acidentes (a partir de 2017)'}
                 diretorio = self._criar_diretorio('{}/{}'.format(caminho, ano))
 
                 # Carrega e descompacta arquivo comprimido
-                formato_arquivo = dataset.headers['Content-Type'].split('/')[-1]
+                formato_arquivo = dataset.headers['Content-Type'].split(
+                    '/')[-1]
                 extrair_arquivos(formato_arquivo, diretorio, dataset.content)
             except requests.exceptions.ConnectionError as ex:
                 self._exibir_erro("Falha de conexão. "
                                   "Verifique sua conexão e tente novamente.", ex)
             except Exception as ex:
                 self._exibir_erro("Ocorreu um erro inesperado. "
-                                  "Verifique sua conexão e tente novamente.", ex)            
+                                  "Verifique sua conexão e tente novamente.", ex)
 
     def dataframe(self, tipo: {'infracoes', 'acidentes_pessoa',
-                  'acidentes_ocorrencia', 'acidentes_agrupados'},
+                               'acidentes_ocorrencia', 'acidentes_agrupados'},
                   anos: list = None, caminho: str = os.getcwd(),
                   estado: str = None,
                   regiao: {'CO', 'N', 'NE', 'S', 'SE'}=None) -> pd.DataFrame:
