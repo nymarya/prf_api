@@ -40,8 +40,8 @@ Todas as causas e tipos de acidentes (a partir de 2017)'}
     }
 
     def __init__(self):
-        self.url = 'https://www.prf.gov.br/portal/dados-abertos/infracoes'
-        self.download_url = 'https://www.prf.gov.br/arquivos/index.php/s/{}/download'
+        self.url = 'https://www.prf.gov.br/portal/dados-abertos-infracoes'
+        self.download_url = 'http://arquivos.prf.gov.br/arquivos/index.php/s/{}/download'
 
         self._carregar_links()
 

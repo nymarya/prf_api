@@ -13,7 +13,7 @@ class Infracoes:
     """
 
     def __init__(self):
-        self.url = 'https://portal.prf.gov.br/portal/dados-abertos/infracoes'
+        self.url = 'https://portal.prf.gov.br/dados-abertos-infracoes'
 
     def carregar_links(self, response):
         """ Carrega links disponíveis na página de infrações. """
@@ -22,8 +22,7 @@ class Infracoes:
         # Cria um objeto BeautifulSoup a partir do HTML
         soup = BeautifulSoup(html_data, features="html.parser")
 
-        links = soup.findAll("a", {"class": "internal-link"})
-
+        links = soup.findAll("a")
         # Filtra links referentes aos anos
         self.links = {int(link.text): link['href'].split('/')[-1]
                       for link in links if link.text.startswith('20')}
