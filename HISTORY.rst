@@ -6,3 +6,8 @@ History
 ------------------
 
 * First release on PyPI.
+
+
+0.2.1 (2021-06-08)
+
+* Fix download of accident data 

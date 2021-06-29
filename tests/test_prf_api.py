@@ -33,6 +33,11 @@ def test_init():
                 'jun', 'mai', 'mar', 'nov', 'out', 'set']:
         assert os.path.exists(caminho + "/2018/" + mes + ".csv")
 
+    prf_data.baixar('acidentes_ocorrencia', anos=[2016])
+    caminho = os.getcwd() + "/acidentes_ocorrencia"
+    assert os.path.exists(caminho)
+    assert os.path.exists(caminho + "/2016")
+
 
 def test_dataframe():
     """ Testa criação de dataframe"""
@@ -44,6 +49,10 @@ def test_dataframe():
     anos = df.dat_infracao.str.split('-', n=1, expand=True)[0].unique()
     assert sorted(anos) == ['2017', '2018']
     assert len(df.columns) == 22
+
+    df_acidente = prf_data.dataframe('acidentes_ocorrencia', anos=[2016],
+                                     estado='RN')
+    assert df_acidente.uf.unique() == ['RN']
 
 
 def test_command_line_interface():

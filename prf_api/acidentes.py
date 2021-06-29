@@ -13,7 +13,7 @@ class Acidente:
     """
 
     def __init__(self):
-        self.url = 'https://portal.prf.gov.br/portal/dados-abertos/acidentes/acidentes'
+        self.url = 'https://portal.prf.gov.br/dados-abertos-acidentes'
         self._tipo = ''
         self.links = {}
 
@@ -24,20 +24,17 @@ class Acidente:
         # Cria um objeto BeautifulSoup a partir do HTML
         soup = BeautifulSoup(html_data, features="html.parser")
 
-        # Recupera tabelas com título
-        tabelas = soup.findAll("table", {"class": "listing"})
-
-        # Recupera tabelas com links
-        tabelas_links = soup.findAll("table", {"class": "plain"})
+        # Recupera título
+        titulos = soup.findAll("h2")
 
         links = []
 
         # Busca links
-        for i, tabela in enumerate(tabelas):
-            titulo = tabela.find('tbody').find('tr').find('th').find('h2')
-            # Checa título da tabela
-            if titulo.text == tipo:
-                links = tabelas_links[i].findAll('a')
+        for i, tag in enumerate(titulos):
+            titulo = tag.text
+            # Checa título de H2, procura lista de links próximo
+            if titulo == tipo:
+                links = tag.find_next_sibling('ul').findAll('a')
                 break
 
         # Filtra links referentes aos anos
